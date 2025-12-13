@@ -184,11 +184,11 @@ def fish():
                 for a in range(rows):
                     if  i==lottety_x and a==lottety_y and clearcount<8 and not a in delete__:
                         if rare1_flag==True:
-                            screen.blit(font_fish.render(rare1, True, (100,0,0)),(left_limit+fontsize_and_interval*i,up_limit+fontsize_and_interval*a))
+                            screen.blit(font_fish.render(rare1, True, (0,0,0)),(left_limit+fontsize_and_interval*i,up_limit+fontsize_and_interval*a))
                         elif rare2_flag:
-                            screen.blit(font_fish.render(rare2, True, (100,0,0)),(left_limit+fontsize_and_interval*i,up_limit+fontsize_and_interval*a))
+                            screen.blit(font_fish.render(rare2, True, (0,0,0)),(left_limit+fontsize_and_interval*i,up_limit+fontsize_and_interval*a))
                         else:
-                            screen.blit(font_fish.render(enemy, True, (100,0,0)),(left_limit+fontsize_and_interval*i,up_limit+fontsize_and_interval*a))
+                            screen.blit(font_fish.render(enemy, True, (0,0,0)),(left_limit+fontsize_and_interval*i,up_limit+fontsize_and_interval*a))
                     elif clearcount<8 and not a in delete__ :
                         screen.blit(font_fish.render(normal, True, (0,0,0)),(left_limit+fontsize_and_interval*i,up_limit+fontsize_and_interval*a))
 
