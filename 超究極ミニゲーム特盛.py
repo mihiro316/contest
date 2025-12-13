@@ -18,7 +18,7 @@ home_y=0
 white=(255,255,255)
 screen.fill(white)
 home_unit=("秒","ミス","貫","個")
-home_game_mode_name=tuple(i+"モード" for i in ("ラノベ","チョコ","炙り","金ゴールド"))
+home_game_mode_name=tuple(i+"モード" for i in ("ラノベ","チョコ","炙り","ゴールド"))
 home_modo=[[False,"???"] for i in range(len(home_unit))]
 home_bestscore=["-" for i in range(len(home_modo)+1)]
 home_clearcount=[0 for i in range(4)]
@@ -294,7 +294,7 @@ def window():
     flame_flame_color=(93,54,5)
     dustcloth=pg.transform.rotate(pg.transform.scale(pg.image.load("assets/window/picture/dustcloth.png"), (int(2160//5), int(1620//5))), 110)
     if home_modo[1][0]:
-        dustcloth=pg.image.load("assets/window/picture/dustcloth.png")
+        dustcloth=pg.image.load("assets/window/picture/dustcloth_2.png")
         flame_color=(126,56,0)
         flame_flame_color=(67,37,0)
         tree=pg.image.load("assets/window/picture/tree.png")
@@ -478,7 +478,7 @@ def salmon():
                         if lottery>=950:
                             sushi[i][3]=picture[2]
                             sushi[i][2]=3
-                        elif lottery>=948:
+                        elif lottery>=940:
                             sushi[i][3]=picture[8]
                             sushi[i][2]=2
                         else:
@@ -1010,7 +1010,7 @@ while home_run:
         print(home_game)
         print("a")
         home_game[home_scene-4]()
-        if getstarcount(0)==0:
+        if getstarcount(home_scene-4)==0:
             home_modo[home_scene-4][1]=home_game_mode_name[home_scene-4]
         home_scene=0
         play_bgm() 
