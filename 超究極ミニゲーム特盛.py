@@ -18,9 +18,9 @@ home_y=0
 white=(255,255,255)
 screen.fill(white)
 home_unit=("秒","ミス","貫","個")
-home_game_mode_name=(i+"モード" for i in ("ラノベ","チョコ","炙り","金ゴールド"))
+home_game_mode_name=tuple(i+"モード" for i in ("ラノベ","チョコ","炙り","金ゴールド"))
 home_modo=[[False,"???"] for i in range(len(home_unit))]
-home_bestscore=["-" for i in range(len(home_modo))]
+home_bestscore=["-" for i in range(len(home_modo)+1)]
 home_clearcount=[0 for i in range(4)]
 home_manual=tuple(pg.image.load("assets/home/manual/"+i+".png") for i in ("sakana","okasinoie","pakuttosalmon","pankuiUFO"))
 home_font="assets/font/GenEiGothicN-Heavy.otf"
@@ -35,6 +35,7 @@ home_click=False
 home_clock=pg.time.Clock()
 home_fps=60
 home_scene=0
+home_lightnovel=0
 home_run=True
 home_se_choose=pg.mixer.Sound("assets/home/sound/select.mp3")
 home_se_mistake=pg.mixer.Sound("assets/home/sound/miss.mp3")
@@ -42,7 +43,7 @@ home_se_decision=pg.mixer.Sound("assets/home/sound/go.mp3")
 home_se_back=pg.mixer.Sound("assets/home/sound/back.mp3")
 #星
 # [[0,"ピッカピカ","「ワイプ・ザ・ウィンドウ」をクリアする"],[0,"きれい好き","「ワイプ・ザ・ウィンドウ」を5回クリアする"],[0,"大掃除","「ワイプ・ザ・ウィンドウ」を7回クリアする"],[0,"右大臣","？？？（スター“きれい好き”を獲得したら獲得条件がわかるよ）"],[0,"大失敗","？？？"],[0,"破壊神","？？？"],[0,"ヒント","スター“大掃除”を獲得たらヒントが見れるよ"]],
-star_liset=[[[0,"ミッケ！","「魚」をクリアする"],[0,"大漁","「魚」を5回クリアする"],[0,"探偵","「魚」を70秒以内にクリアする"],[0,"探し物名人","「魚」を30秒以内にクリアする"],[0,"鯛","「魚」で“鯛”に遭遇する"],[0,"鯖","「魚」で“鯖”に遭遇する"],[0,"ヒント","スター“大漁”を獲得するしたらヒントが見れるよ"]],
+star_liset=[[[0,"ミッケ！","「魚」をクリアする"],[0,"大漁","「魚」を5回クリアする"],[0,"探偵","「魚」を70秒以内にクリアする"],[0,"探し物名人","「魚」を30秒以内にクリアする"],[0,"鯛","「魚」で“鯛”に遭遇してクリアする"],[0,"鯖","「魚」で“鯖”に遭遇してクリアする"],[0,"ヒント","スター“大漁”を獲得するしたらヒントが見れるよ"]],
             [[0,"ピッカピカ","？？？"],[0,"きれい好き","？？？"],[0,"大掃除","？？？"],[0,"右大臣","？？？（スター“きれい好き”を獲得したら獲得条件がわかるよ）"],[0,"大失敗","？？？"],[0,"破壊神","？？？（スター“右大臣”を獲得したら獲得条件がわかるよ）"],[0,"拭け！","？？？（スター“大掃除”を獲得したら獲得条件がわかるよ）"],[0,"ヒント","スター“大掃除”を獲得たらヒントが見れるよ"]],
             [[0,"おいしい","「パクッとサーモン」をクリアする"],[0,"行きつけのお店","「パクッとサーモン」を5回以上クリアする"],[0,"常連さん","「パクッとサーモン」を10回以上クリアする"],[0,"大食い","「パクッとサーモン」を200貫以上食べてクリアする"],[0,"フードファイター","「パクッとサーモン」を300貫以上食べてクリアする"],[0,"サーモンフェア","「パクッとサーモン」をトリプルサーモン食べてクリアする"],[0,"ヒント","スター“常連さん”を獲得したらヒントが見れるよ"]],
             [[0,"初心者パイロット","「パン食いUFO」をクリアする"],[0,"中堅パイロット","「パン食いUFO」を5回クリアする"],[0,"ベテランパイロット","「パン食いUFO」を7回クリアする"],[0,"長時間フライト","「パン食いUFO」でパン3斤分長く飛ぶ"],[0,"パンマニア","「パン食いUFO」でジャムを30個以上回収してクリアする"],[0,"パン王","「パン食いUFO」でジャムを40個以上回収してクリアする"],[0,"ヒント","スター“ベテランパイロット”を獲得したらヒントが見れるよ"]]]
@@ -158,8 +159,8 @@ def fish():
             time=pg.time.get_ticks()-starttime
         if clearcount==8 and (clear<=0):
             clear=0
-            if  home_clearcount[0]==0 or home_bestscore[0]>time/1000:
-                home_bestscore[0]=time/1000
+            if  home_bestscore[home_lightnovel]=="-" or home_bestscore[home_lightnovel]>time/1000:
+                home_bestscore[home_lightnovel]=time/1000
             home_clearcount[0]+=1
             star[0][0][0]=1
             se_clea.play()
@@ -178,20 +179,16 @@ def fish():
                  clear+=1
                  pg.time.delay(50)
 
-                 
-
-             
-
         for i in range(colmuns):
             if not i in delete_l:
                 for a in range(rows):
                     if  i==lottety_x and a==lottety_y and clearcount<8 and not a in delete__:
                         if rare1_flag==True:
-                            screen.blit(font_fish.render(rare1, True, (0,0,0)),(left_limit+fontsize_and_interval*i,up_limit+fontsize_and_interval*a))
+                            screen.blit(font_fish.render(rare1, True, (100,0,0)),(left_limit+fontsize_and_interval*i,up_limit+fontsize_and_interval*a))
                         elif rare2_flag:
-                            screen.blit(font_fish.render(rare2, True, (0,0,0)),(left_limit+fontsize_and_interval*i,up_limit+fontsize_and_interval*a))
+                            screen.blit(font_fish.render(rare2, True, (100,0,0)),(left_limit+fontsize_and_interval*i,up_limit+fontsize_and_interval*a))
                         else:
-                            screen.blit(font_fish.render(enemy, True, (0,0,0)),(left_limit+fontsize_and_interval*i,up_limit+fontsize_and_interval*a))
+                            screen.blit(font_fish.render(enemy, True, (100,0,0)),(left_limit+fontsize_and_interval*i,up_limit+fontsize_and_interval*a))
                     elif clearcount<8 and not a in delete__ :
                         screen.blit(font_fish.render(normal, True, (0,0,0)),(left_limit+fontsize_and_interval*i,up_limit+fontsize_and_interval*a))
 
@@ -246,7 +243,7 @@ def fish():
                         screen.blit(font_score.render(str(time/1000), True, (255,0,0)),(20,10))
                         manual()
                         starttime+=pg.time.get_ticks()-manual_time
-                    elif clearcount>8:
+                    elif clearcount>=8:
                         se_search.stop()
                         run=False
                 if event.type == pg.KEYDOWN and event.key == pg.K_r:
@@ -266,13 +263,12 @@ def fish():
                                 delete__.remove(lottety_y)
                             else:
                                 delete__.pop(-1)
-                        else:
+                        elif run:
                             support-=1
                             search=True
                             se_search.play(loops=-1)
         screen.blit(triangle,(1215,triangley))
         screen.blit(mousecursor,(mouse_x-23,mouse_y-23))
-        # screen.blit(font_score.render(str(clearcount//10)+"/8回", True, (0,0,0)),(1000,10))
         pg.draw.rect(screen,(0,0,0), (1240,0,100,720))
         pg.draw.rect(screen,(255,169,49), (1240,660-66*clearcount,100,795))
         screen.blit(topright[int(clearcount)],(1146,0))
@@ -840,7 +836,7 @@ while home_run:
         screen.blit(pg.font.Font(home_font,50).render(home_modo[home_y][1], True, (255,255,255)),(900,430))
         screen.blit(pg.font.Font(home_font,21).render("開放条件:"+star_game_name[home_y]+"のスターを全て獲得する", True, (0,0,0)),(718,513))
         screen.blit(pg.font.Font(home_font,40).render(str(home_clearcount[home_y])+"回", True, (0,0,0)),(1000,100))
-        screen.blit(pg.font.Font(home_font,40).render(str(home_bestscore[home_y])+home_unit[home_y], True, (0,0,0)),(950,230))
+        screen.blit(pg.font.Font(home_font,40).render(str(home_bestscore[(home_y+home_lightnovel)%5+(home_y+home_lightnovel)//5])+home_unit[home_y], True, (0,0,0)),(950,230))
         screen.blit(home_frame[home_x],(0,0))
 
     if home_scene == 1:
@@ -878,8 +874,6 @@ while home_run:
     for event in pg.event.get():
             home_click=False
             home_mouse_x,home_mouse_y=pg.mouse.get_pos()
-            # if event.type == MOUSEBUTTONDOWN and event.button==1:
-                # print( home_mouse_x,home_mouse_y)
             if event.type == pg.QUIT:
                     home_run= False
             if (event.type==pg.KEYDOWN and event.key==pg.K_c) or ( event.type == MOUSEBUTTONDOWN and (event.button==1 or event.button==3) and 936<=home_mouse_x  and 307<=home_mouse_y<=403) :
@@ -942,9 +936,13 @@ while home_run:
                         if getstarcount(home_y)==0:
                             if home_modo[home_y][0]==False:
                                 home_modo[home_y][0]=True
+                                if home_y==0:
+                                    home_lightnovel=len(home_modo)
                                 home_se_decision.play()
                             else:
                                 home_modo[home_y][0]=False
+                                if home_y==0:
+                                    home_lightnovel=0
                                 home_se_back.play()
                         else:
                             home_se_mistake.play()          
@@ -984,11 +982,12 @@ while home_run:
                 if (event.type==pg.KEYDOWN and event.key==pg.K_SPACE )or ( event.type == MOUSEBUTTONDOWN and (event.button==1 or event.button==3)):
                     if home_x==3 or ( 790<=home_mouse_x<=1000  and 360<home_mouse_y<=470):
                         home_modo=[[False,"???"] for i in range(len(home_unit))]
-                        home_bestscore=["-" for i in range(len(home_modo))]
+                        home_bestscore=["-" for i in range(len(home_modo)+1)]
                         home_clearcount=[0 for i in range(4)]
                         star=copy.deepcopy(star_liset)
                         home_scene=0
                         home_x=0
+                        home_lightnovel=0
                         play_bgm()
                     elif  event.type==pg.KEYDOWN or ( 230<=home_mouse_x<=525  and 326<home_mouse_y<=500):
                         home_se_back.play()
@@ -1008,25 +1007,12 @@ while home_run:
             event=None
             pg.event.clear
     if home_scene>=4:
-        # if home_scene==4:
         print(home_game)
         print("a")
         home_game[home_scene-4]()
         if getstarcount(0)==0:
             home_modo[home_scene-4][1]=home_game_mode_name[home_scene-4]
         home_scene=0
-        # if home_scene==5:
-        #     window()
-        #     if getstarcount(1)==0 :
-        #         home_modo[1][1]="チョコモード"
-        # if home_scene==6:
-        #     salmon()
-        #     if getstarcount(2)==0:
-        #         home_modo[2][1]="炙りモード"
-        # if home_scene==7:
-        #     UFO()
-        #     if getstarcount(3)==0:
-        #        home_modo[3][1]="ゴールドモード"
         play_bgm() 
 #更新
     pg.draw.rect(screen, (0, 0, 0), (0, screen_height, screen_width, black_line_y))
