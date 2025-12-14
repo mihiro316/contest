@@ -8,9 +8,9 @@ screen_width=1280
 screen_height=720
 black_line_y = pg.display.Info().current_h
 # screen=pg.display.set_mode((screen_width,screen_height))
-# screen=pg.display.set_mode((screen_width,screen_height),FULLSCREEN)
+screen=pg.display.set_mode((screen_width,screen_height),FULLSCREEN)
 # screen=pg.display.set_mode((screen_width,screen_height),pg.FULLSCREEN | pg.SCALED)
-screen=pg.display.set_mode((screen_width,screen_height),RESIZABLE)
+# screen=pg.display.set_mode((screen_width,screen_height),RESIZABLE)
 # screen=pg.display.set_mode((screen_width,screen_height),pg.RESIZABLE | pg.SCALED)
 pg.display.set_caption("超究極ミニゲーム奇跡")
 home_x=0
