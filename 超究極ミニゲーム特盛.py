@@ -8,9 +8,9 @@ screen_width=1280
 screen_height=720
 black_line_y = pg.display.Info().current_h
 # screen=pg.display.set_mode((screen_width,screen_height))
-screen=pg.display.set_mode((screen_width,screen_height),FULLSCREEN)
+# screen=pg.display.set_mode((screen_width,screen_height),FULLSCREEN)
 # screen=pg.display.set_mode((screen_width,screen_height),pg.FULLSCREEN | pg.SCALED)
-# screen=pg.display.set_mode((screen_width,screen_height),RESIZABLE)
+screen=pg.display.set_mode((screen_width,screen_height),RESIZABLE)
 # screen=pg.display.set_mode((screen_width,screen_height),pg.RESIZABLE | pg.SCALED)
 pg.display.set_caption("超究極ミニゲーム奇跡")
 home_x=0
@@ -18,17 +18,17 @@ home_y=0
 white=(255,255,255)
 screen.fill(white)
 home_unit=("秒","ミス","貫","個")
-home_game_mode_name=tuple(i+"モード" for i in ("ラノベ","チョコ","炙り","ゴールド"))
+home_game_mode_name=tuple(i+"モード" for i in ("激辛","チョコ","炙り","ゴールド"))
 home_modo=[[False,"???"] for i in range(len(home_unit))]
 home_bestscore=["-" for i in range(len(home_modo)+1)]
 home_clearcount=[0 for i in range(4)]
-home_manual=tuple(pg.image.load("assets/home/manual/"+i+".png") for i in ("sakana","okasinoie","pakuttosalmon","pankuiUFO"))
+home_manual=tuple(pg.image.load("assets/home/manual/"+i+".png") for i in ("spicy","okasinoie","pakuttosalmon","pankuiUFO"))
 home_font="assets/font/GenEiGothicN-Heavy.otf"
 home_screen=pg.image.load("assets/home//picture/home_ui.png")
 home_delete=pg.image.load("assets/delete/background.png")
 home_delete_choice=pg.image.load("assets/delete/cursor.png")
 home_frame=tuple(pg.image.load("assets/home/picture/select_"+i+".png") for i in ("1","2","3"))
-home_package=tuple(pg.image.load("assets/home/package/"+i+".png") for i in ("sakana","okasinoie","pakuttosalmon","pankuiUFO"))
+home_package=tuple(pg.image.load("assets/home/package/"+i+".png") for i in ("spicy","okasinoie","pakuttosalmon","pankuiUFO"))
 home_mouse_x=0
 home_mouse_y=0
 home_click=False
@@ -43,7 +43,7 @@ home_se_decision=pg.mixer.Sound("assets/home/sound/go.mp3")
 home_se_back=pg.mixer.Sound("assets/home/sound/back.mp3")
 #星
 # [[0,"ピッカピカ","「ワイプ・ザ・ウィンドウ」をクリアする"],[0,"きれい好き","「ワイプ・ザ・ウィンドウ」を5回クリアする"],[0,"大掃除","「ワイプ・ザ・ウィンドウ」を7回クリアする"],[0,"右大臣","？？？（スター“きれい好き”を獲得したら獲得条件がわかるよ）"],[0,"大失敗","？？？"],[0,"破壊神","？？？"],[0,"ヒント","スター“大掃除”を獲得たらヒントが見れるよ"]],
-star_liset=[[[0,"ミッケ！","「魚」をクリアする"],[0,"大漁","「魚」を5回クリアする"],[0,"探偵","「魚」を70秒以内にクリアする"],[0,"探し物名人","「魚」を30秒以内にクリアする"],[0,"鯛","「魚」で“鯛”に遭遇してクリアする"],[0,"鯖","「魚」で“鯖”に遭遇してクリアする"],[0,"ヒント","スター“大漁”を獲得するしたらヒントが見れるよ"]],
+star_liset=[[[0,"ミッケ！","「辛」をクリアする"],[0,"辛い","「辛」を5回クリアする"],[0,"探偵","「辛」を70秒以内にクリアする"],[0,"探し物名人","「辛」を30秒以内にクリアする"],[0,"苦","「辛」で“苦”に遭遇してクリアする"],[0,"酸","「辛」で“酸”に遭遇してクリアする"],[0,"ヒント","スター“辛い”を獲得するしたらヒントが見れるよ"]],
             [[0,"ピッカピカ","？？？"],[0,"きれい好き","？？？"],[0,"大掃除","？？？"],[0,"右大臣","？？？（スター“きれい好き”を獲得したら獲得条件がわかるよ）"],[0,"大失敗","？？？"],[0,"破壊神","？？？（スター“右大臣”を獲得したら獲得条件がわかるよ）"],[0,"拭け！","？？？（スター“大掃除”を獲得したら獲得条件がわかるよ）"],[0,"ヒント","スター“大掃除”を獲得たらヒントが見れるよ"]],
             [[0,"おいしい","「パクッとサーモン」をクリアする"],[0,"行きつけのお店","「パクッとサーモン」を5回以上クリアする"],[0,"常連さん","「パクッとサーモン」を10回以上クリアする"],[0,"大食い","「パクッとサーモン」を200貫以上食べてクリアする"],[0,"フードファイター","「パクッとサーモン」を300貫以上食べてクリアする"],[0,"サーモンフェア","「パクッとサーモン」をトリプルサーモン食べてクリアする"],[0,"ヒント","スター“常連さん”を獲得したらヒントが見れるよ"]],
             [[0,"初心者パイロット","「パン食いUFO」をクリアする"],[0,"中堅パイロット","「パン食いUFO」を5回クリアする"],[0,"ベテランパイロット","「パン食いUFO」を7回クリアする"],[0,"長時間フライト","「パン食いUFO」でパン3斤分長く飛ぶ"],[0,"パンマニア","「パン食いUFO」でジャムを30個以上回収してクリアする"],[0,"パン王","「パン食いUFO」でジャムを40個以上回収してクリアする"],[0,"ヒント","スター“ベテランパイロット”を獲得したらヒントが見れるよ"]]]
@@ -60,7 +60,7 @@ star_light=pg.image.load("assets/star/hint.png")
 str_se_choice=pg.mixer.Sound("assets/star/select.mp3")
 star_x=0
 star_y=0
-star_game_name=("魚","お菓子の家","パクッとサーモン","パン食いUFO")
+star_game_name=("幸","お菓子の家","パクッとサーモン","パン食いUFO")
 star_hint=("目を細めて少し遠くから見てみよう","気合をいれろ","気を抜くな","キーボードを回して操作してみよう")
 star_clearrate=0
 star_clearcount=0
@@ -70,16 +70,16 @@ for i in range(len(star)):
 stop_button=pg.image.load("assets/home/manual/stop_button.png")
 manual_mode=2
 
-def fish():
-    se_fail=pg.mixer.Sound("assets/fish/sound/false.mp3")
-    se_clea=pg.mixer.Sound("assets/fish/sound/clear.mp3")
-    se_search=pg.mixer.Sound("assets/fish/sound/search.wav")
-    se_explosion=pg.mixer.Sound("assets/fish/sound/explosion.mp3")
-    se_gun=pg.mixer.Sound("assets/fish/sound/shot.mp3")
-    frame=pg.image.load("assets/fish/picture/flame.png")
-    mousecursor=pg.image.load("assets/fish/picture/mousecursor.png")
-    triangle=pg.image.load("assets/fish/picture/triangle.png")
-    pg.mixer.music.load("assets/fish/sound/bgm.wav")
+def spicy():
+    se_fail=pg.mixer.Sound("assets/spicy/sound/false.mp3")
+    se_clea=pg.mixer.Sound("assets/spicy/sound/clear.mp3")
+    se_search=pg.mixer.Sound("assets/spicy/sound/search.wav")
+    se_explosion=pg.mixer.Sound("assets/spicy/sound/explosion.mp3")
+    se_gun=pg.mixer.Sound("assets/spicy/sound/shot.mp3")
+    frame=pg.image.load("assets/spicy/picture/flame.png")
+    mousecursor=pg.image.load("assets/spicy/picture/mousecursor.png")
+    triangle=pg.image.load("assets/spicy/picture/triangle.png")
+    pg.mixer.music.load("assets/spicy/sound/bgm.wav")
     pg.mixer.music.play(loops=-1)
     mouse_x=0#mx
     mouse_y=0
@@ -106,23 +106,23 @@ def fish():
     volume=1
     wait=False
     explosion=False
-    topright=tuple(pg.image.load("assets/fish/picture/happy_"+str(i)+".png") for i in range(9))
+    topright=tuple(pg.image.load("assets/spicy/picture/happy_"+str(i)+".png") for i in range(9))
     if random.randrange(2)==1:
         explosion=True
         support=2
-        swich=tuple(pg.image.load("assets/fish/picture/explosion_"+i+".png") for i in ("green","red","gray"))
+        swich=tuple(pg.image.load("assets/spicy/picture/explosion_"+i+".png") for i in ("green","red","gray"))
     else:
-        swich=tuple(pg.image.load("assets/fish/picture/search_"+i+".png") for i in ("green","red","gray"))
+        swich=tuple(pg.image.load("assets/spicy/picture/search_"+i+".png") for i in ("green","red","gray"))
     delete_l=[-50 for i in range(8)]
     delete__=[-50 for i in range(5)]
     GAMECLEAR=["GAMECLEAR"]
     happy_fps=60
     left_limit=95
     up_limit=125
-    normal="鮭"
-    enemy="鮪"
-    rare1="鯛"
-    rare2="鯖"
+    normal="幸"
+    enemy="辛"
+    rare1="苦"
+    rare2="酸"
     fish_stop_button_x=875
     fish_stop_button=pg.transform.scale(stop_button,(1700//6.5,472//6.5))
     manual_time=0
@@ -134,10 +134,10 @@ def fish():
     if home_modo[0][0]:
         rows=8
         colmuns=16
-        normal="鮎"
-        enemy="鯉"
-        rare1="鰻"
-        rare2="鯨"
+        normal="辛"
+        enemy="幸"
+        rare1="甘"
+        rare2="旨"
         fontsize=63
         interval=8
         left_limit=40
@@ -145,6 +145,14 @@ def fish():
         support+=1
         font_fish = pg.font.Font("assets/font/LightNovelPOPv2.otf",fontsize)
     fontsize_and_interval=fontsize+interval
+    if home_clearcount[0]>0:
+            lottery=random.randint(1,20)
+            if lottery==1:
+                    rare1_flag=True
+                    star[0][4][0]=1
+            elif lottery==2:
+                    rare2_flag=True
+                    star[0][5][0]=1
  
     while run:
         screen.fill(white)
@@ -823,7 +831,7 @@ def play_bgm():
     pg.mixer.music.load("assets/home/sound/bgm.wav")
     pg.mixer.music.play(loops=-1)
 play_bgm()
-home_game=(fish,window,salmon,UFO)
+home_game=(spicy,window,salmon,UFO)
 #メインループ＝＝＝ ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 while home_run:
     if home_scene==0 or home_scene==1:
